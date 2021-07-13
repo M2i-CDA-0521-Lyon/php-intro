@@ -12,10 +12,19 @@
 
 <h2>Exemples</h2>
 <h3>Formulaire de recherche</h3>
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
 <?php if (isset($_GET['search'])): ?>
 <div class="alert alert-info">Vous avez recherché: <?= $_GET['search'] ?></div>    
 <?php endif; ?>
-<form>
+PHP;
+highlight_string($code); ?>
+</div>
+<?php if (isset($_GET['search'])): ?>
+<div class="alert alert-info">Vous avez recherché: <?= $_GET['search'] ?></div>    
+<?php endif; ?>
+<form class="mt-4 mb-4">
     <div class="mb-3">
         <input name="search" class="form-control" type="text" placeholder="Entre vos termes de recherche" />
     </div>
@@ -23,7 +32,20 @@
 </form>
 
 <h3>Formulaire d'authentification</h3>
-<form method="post" action="actions/authenticate.php">
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
+<?php
+// actions/authentication.php
+if ($_POST['username'] === 'test' && $_POST['password'] === 'test') {
+    echo 'Authentification réussie.';
+} else {
+    echo 'Authentification échouée.';
+}
+PHP;
+highlight_string($code); ?>
+</div>
+<form class="mt-4 mb-4" method="post" action="actions/authenticate.php">
     <div class="mb-3">
         <label for="username">Nom d'utilisateur</label>
         <input name="username" class="form-control" type="text" placeholder="Nom d'utilisateur" />

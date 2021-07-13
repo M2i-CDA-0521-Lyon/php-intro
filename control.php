@@ -9,25 +9,31 @@
 
 <h2 class="mt-4">Conditions</h2>
 <p>Les conditions permettent de faire une sorte qu'une portion de code ne s'exécute que dans certaines situations.</p>
-<code>
-<pre>
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
+<?php
 if (condition) {
     // Code à exécuter si la condition est vraie
 } else {
     // Code à exécuter si la condition est fausse
 }
-</pre>
-</code>
+PHP;
+highlight_string($code); ?>
+</div>
+
 <p>En PHP, il est également possible de soumettre des blocs entiers de code HTML à une condition.</p>
-<code>
-<pre>
-&lt;?php if (condition): ?&gt;
-    &lt;p&gt;Ce paragraphe s'affichera uniquement si la condition est vraie&lt;/p&gt;
-&lt;?php else: ?&gt;
-    &lt;p&gt;Ce paragraphe s'affichera uniquement si la condition est fausse&lt;/p&gt;
-&lt;?php endif; ?&gt;
-</pre>
-</code>
+<div class="code-container">
+<?php
+$code = <<<'PHP'
+<?php if (condition): ?>
+    <p>Ce paragraphe s'affichera uniquement si la condition est vraie</p>
+<?php else: ?>
+    <p>Ce paragraphe s'affichera uniquement si la condition est fausse</p>
+<?php endif; ?>
+PHP;
+highlight_string($code); ?>
+</div>
 
 <h3>Exemple</h3>
 <div class="alert alert-info">Aprés avoir défini <code>$age = <?php echo $age ?></code> :</div>
@@ -35,26 +41,38 @@ if (condition) {
 <h4>
     Affiche l'âge fourni
 </h4>
-<code>&lt;p&gt;Vous avez &lt;?php echo $age ?&gt; ans.&lt;/p&gt;</code>
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
+<?php
+<p>Vous avez <?php echo $age ?> ans.</p>
+PHP;
+highlight_string($code); ?>
+</div>
 <p>Vous avez <?php echo $age ?> ans.</p>
 
 <h4>
     Affiche un message déterminant si l'âge fourni correspond à une personne majeure ou mineure
 </h4>
-<code>
-<pre>
-&lt;p&gt;
+
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
+<?php
+<p>
     Vous êtes
-    &lt;?php
-        if ($age &gt;= 18) {
+    <?php
+        if ($age >= 18) {
             echo 'majeur';
         } else {
             echo 'mineur';
         }
-    ?&gt;.
-&lt;/p>
-</pre>
-</code>
+    ?>.
+</p>
+PHP;
+highlight_string($code); ?>
+</div>
+
 <p>Vous êtes
     <?php
         // Écrit "majeur" si l'âge est supérieur ou égal à 18, sinon écrit "mineur"
@@ -66,23 +84,26 @@ if (condition) {
     ?>.</p>
 
 <h4>Affiche un formulaire d'autorisation parentale pour les personnes mineures</h4>
-<code>
-<pre>
-&lt;?php if ($age &lt; 18): ?&gt;
-    &lt;form class="card"&gt;
-        &lt;div class="card-body"&gt;
-            &lt;div&gt;Avez-vous l'autorisation de vos parents?&lt;/div&gt;
-            &lt;div class="d-flex"&gt;
-                &lt;button class="btn btn-primary"&gt;Oui&lt;/button&gt;
-                &lt;button class="btn btn-secondary"&gt;Non&lt;/button&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/form&gt;
-&lt;?php else: ?&gt;
-    &lt;div&gt;Vous n'avez pas besoin d'une autorisation parentale!&lt;/div&gt;
-&lt;?php endif; ?&gt;
-</pre>
-</code>
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
+<?php if ($age < 18): ?>
+    <form class="card">
+        <div class="card-body">
+            <div>Avez-vous l'autorisation de vos parents?</div>
+            <div class="d-flex">
+                <button class="btn btn-primary">Oui</button>
+                <button class="btn btn-secondary">Non</button>
+            </div>
+        </div>
+    </form>
+<?php else: ?>
+    <div>Vous n'avez pas besoin d'une autorisation parentale!</div>
+<?php endif; ?>
+PHP;
+highlight_string($code); ?>
+</div>
+
 <?php if ($age < 18): ?>
 <!-- Ce formulaire s'affichera uniquement si l'âge est strictement inférieur à 18 -->
 <form class="card">
@@ -103,18 +124,20 @@ if (condition) {
 
 <h3>La commande <code>for</code></h3>
 <p>La commande <code>for</code> permet de créer une boucle comprenant un itérateur, c'est-à-dire un nombre variant d'une valeur de départ à une valeur d'arrivée.</p>
-<code>
-<pre>
-&lt;p&gt;
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
+<p>
     Liste des nombres de 0 à 9:
-    &lt;?php
-        for ($i = 0; $i &lt; 10; $i += 1) {
+    <?php
+        for ($i = 0; $i < 10; $i += 1) {
             echo $i . ', ';
         }
-    ?&gt;
-&lt;/p&gt;
-</pre>
-</code>
+    ?>
+</p>
+PHP;
+highlight_string($code); ?>
+</div>
 <p>
     Liste des nombres de 0 à 9:
     <?php
@@ -127,16 +150,18 @@ if (condition) {
 <h3>La commande <code>foreach</code></h3>
 <p>La commande <code>foreach</code> permet de parcourir un tableau. Dans ce cas, il faut spécifier un tableau, et un nom de variable permettant de contenir temporairement chaque élément du tableau successivement (comme un itérateur permet de savoir à quel point de la boucle on est dans une boucle classique).</p>
 <div class="alert alert-info">Aprés avoir défini <code>$age = <?php var_export($shoppingList) ?></code> :</div>
-<code>
-<pre>
-&lt;h4&gt;Liste de courses&lt;/h4&gt;
-&lt;ul class="list-group"&gt;
-    &lt;?php foreach ($shoppingList as $listItem): ?&gt;
-    &lt;li class="list-group-item"&gt;&lt;?php echo $listItem ?&gt;&lt;/li&gt;
-    &lt;?php endforeach; ?&gt;
-&lt;/ul&gt;
-</pre>
-</code>
+<div class="code-container">
+<?php 
+$code = <<<'PHP'
+<h4>Liste de courses</h4>
+<ul class="list-group">
+    <?php foreach ($shoppingList as $listItem): ?>
+    <li class="list-group-item"><?php echo $listItem ?></li>
+    <?php endforeach; ?>
+</ul>
+PHP;
+highlight_string($code); ?>
+</div>
 <h4>Liste de courses</h4>
 <ul class="list-group">
     <!-- Génère un élément de liste pour chaque texte contenu dans la liste de courses -->

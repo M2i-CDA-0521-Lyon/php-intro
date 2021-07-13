@@ -1,0 +1,7 @@
+.code-container {
+    padding: .5em .5em .5em 1.5em;
+    border-left: gold 4px solid;
+    border-radius: .25em;
+    background-color: rgb(255, 252, 232);
+    margin-bottom: 1em;
+}
