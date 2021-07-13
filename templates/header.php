@@ -28,6 +28,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/control.php">Structures de contrôle</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/forms.php">Formulaires</a>
+                        </li>
                     </ul>
                 </div>
             </div>

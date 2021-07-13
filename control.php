@@ -1,4 +1,4 @@
-<?php $age = 20 ?>
+<?php $age = 15 ?>
 <?php $shoppingList = ['Bananes', 'Cerises', 'Frites', 'Chocolat', 'Papier toilette'] ?>
 
 <?php $pageName = 'Structures de contrôle' ?>
