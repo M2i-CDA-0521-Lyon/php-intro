@@ -32,6 +32,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/forms.php">Formulaires</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/oop.php">POO</a>
+                        </li>
                     </ul>
                 </div>
             </div>
