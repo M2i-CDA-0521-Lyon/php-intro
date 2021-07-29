@@ -172,3 +172,324 @@ PHP;
 highlight_string($code); ?>
 </div>
 </details>
+
+<h2 id="h-ritage-et-polymorphisme">Héritage et polymorphisme</h2>
+<p>Une classe définit une structure de données et des comportements associés, correspondant à une entité logique d'une application. <em>A priori</em>, chaque classe est différente et incompatible avec les autres classes. Cependant, la plupart des langages orientés objet mettent à notre disposition un mécanisme, appelé <strong>héritage</strong>, qui permet de réutiliser du code de certaines classes dans d'autres classes.</p>
+<p>Par exemple, considérez ce code qui définit plusieurs types de produits disponibles dans une boutique en ligne:</p>
+<details> 
+<summary>Sans héritage</summary>
+
+<div class='code-container'>
+<?php 
+$code = <<<'PHP'
+<?php
+
+// Représente un ordinateur
+class Computer
+{
+    // Référence du produit
+    public string $reference;
+    // Nom du produit
+    public string $name;
+    // Prix du produit
+    public float $price;
+    // Modèle du processeur
+    public string $processor;
+    // Quantité de mémoire vive
+    public int $ram;
+    // Modèle de la carte graphique
+    public string $graphicCard;
+
+    // Permet de créer un nouvel ordinateur
+    public function __construct(string $reference, string $name, float $price, string $processor, int $ram, string $graphicCard) {
+        $this->reference = $reference;
+        $this->name = $name;
+        $this->price = $price;
+        $this->processor = $processor;
+        $this->ram = $ram;
+        $this->graphicCard = $graphicCard;
+    }
+
+    // Génère une description du produit
+    public function getDescription(): string
+    {
+        return
+            'Référence: ' . $this->reference . PHP_EOL .
+            'Nom: ' . $this->name . PHP_EOL .
+            'Prix: ' . $this->price . ' &amp;euro;' . PHP_EOL .
+            'Processeur: ' . $this->processor . PHP_EOL .
+            'Mémoire vive: ' . $this->ram . PHP_EOL .
+            'Carte graphique: ' . $this->graphicCard . PHP_EOL
+        ;
+    }
+}
+
+// Représente une télévision
+class TvScreen
+{
+    // Référence du produit
+    public string $reference;
+    // Nom du produit
+    public string $name;
+    // Prix du produit
+    public float $price;
+    // Largeur de l'écran
+    public int $width;
+    // Hauteur de l'écran
+    public int $height;
+
+    // Permet de créer une nouvelle télévision
+    public function __construct(string $reference, string $name, float $price, int $width, int $height) {
+        $this->reference = $reference;
+        $this->name = $name;
+        $this->price = $price;
+        $this->width = $width;
+        $this->height = $height;
+    }
+
+    // Génère une description du produit
+    public function getDescription(): string
+    {
+        return
+            'Référence: ' . $this->reference . PHP_EOL .
+            'Nom: ' . $this->name . PHP_EOL .
+            'Prix: ' . $this->price . ' &amp;euro;' . PHP_EOL .
+            'Largeur: ' . $this->width . PHP_EOL .
+            'Hauteur: ' . $this->height . PHP_EOL
+        ;
+    }
+}
+
+// Représente une machine à laver
+class WashingMachine
+{
+    // Référence du produit
+    public string $reference;
+    // Nom du produit
+    public string $name;
+    // Prix du produit
+    public float $price;
+    // Nombre de tours
+    public int $spinCycle;
+    // Capacité de chargement
+    public int $loadCapacity;
+
+    // Permet de créer une nouvelle machine à laver
+    public function __construct(string $reference, string $name, float $price, int $spinCycle, int $loadCapacity) {
+        $this->reference = $reference;
+        $this->name = $name;
+        $this->price = $price;
+        $this->spinCycle = $spinCycle;
+        $this->loadCapacity = $loadCapacity;
+    }
+
+    // Génère une description du produit
+    public function getDescription(): string
+    {
+        return
+            'Référence: ' . $this->reference . PHP_EOL .
+            'Nom: ' . $this->name . PHP_EOL .
+            'Prix: ' . $this->price . ' &amp;euro;' . PHP_EOL .
+            'Nombre de tours: ' . $this->spinCycle . PHP_EOL .
+            'Capacité: ' . $this->loadCapacity . PHP_EOL
+        ;
+    }
+}
+PHP;
+highlight_string($code); ?>
+</div>
+
+</details>
+
+<p>On remarque d'emblée des similitudes dans le code de ces trois classes, qui mériteraient d'être factorisées. Par exemple, tous les types de produit ont une référence, un nom et un prix. Mais en même temps, chaque classe a aussi ses spécificités. L'<strong>héritage</strong> nous permet de concilier ces deux aspects en écrivant une nouvelle classe <strong>Product</strong> que l'on qualifiera de <strong>classe-mère</strong> ou de <strong>superclasse</strong>. L'idée est que les type particuliers de produits <strong>héritent</strong> des propriétés communes à tous les types de produits.</p>
+<details> 
+<summary>Avec héritage</summary>
+
+<div class='code-container'>
+<?php 
+$code = <<<'PHP'
+<?php
+
+// Représente un produit en général
+class Product
+{
+    // Référence du produit
+    public string $reference;
+    // Nom du produit
+    public string $name;
+    // Prix du produit
+    public float $price;
+
+    // Permet de créer un nouveau produit
+    public function __construct(string $reference, string $name, float $price) {
+        $this->reference = $reference;
+        $this->name = $name;
+        $this->price = $price;
+    }
+
+    // Génère une description du produit
+    public function getDescription(): string
+    {
+        return
+            'Référence: ' . $this->reference . PHP_EOL .
+            'Nom: ' . $this->name . PHP_EOL .
+            'Prix: ' . $this->price . ' &amp;euro;' . PHP_EOL
+        ;
+    }
+}
+
+// Représente un ordinateur
+class Computer extends Product
+{
+    // Modèle du processeur
+    public string $processor;
+    // Quantité de mémoire vive
+    public int $ram;
+    // Modèle de la carte graphique
+    public string $graphicCard;
+
+    // Permet de créer un nouvel ordinateur
+    public function __construct(string $reference, string $name, float $price, string $processor, int $ram, string $graphicCard) {
+        // Appelle le contructeur du parent
+        parent::__construct(string $reference, string $name, float $price);
+        $this->processor = $processor;
+        $this->ram = $ram;
+        $this->graphicCard = $graphicCard;
+    }
+
+    // Génère une description du produit
+    public function getDescription(): string
+    {
+        // Demande au parent de générer une description avant de la compléter
+        return
+            parent::__getDescription() .
+            'Processeur: ' . $this->processor . PHP_EOL .
+            'Mémoire vive: ' . $this->ram . PHP_EOL .
+            'Carte graphique: ' . $this->graphicCard . PHP_EOL
+        ;
+    }
+}
+
+// Représente une télévision
+class TvScreen extends Product
+{
+    // Largeur de l'écran
+    public int $width;
+    // Hauteur de l'écran
+    public int $height;
+
+    // Permet de créer une nouvelle télévision
+    public function __construct(string $reference, string $name, float $price, int $width, int $height) {
+        // Appelle le contructeur du parent
+        parent::__construct(string $reference, string $name, float $price);
+        $this->width = $width;
+        $this->height = $height;
+    }
+
+    // Génère une description du produit
+    public function getDescription(): string
+    {
+        // Demande au parent de générer une description avant de la compléter
+        return
+            parent::__getDescription() .
+            'Largeur: ' . $this->width . PHP_EOL .
+            'Hauteur: ' . $this->height . PHP_EOL
+        ;
+    }
+}
+
+// Représente une machine à laver
+class WashingMachine extends Product
+{
+    // Nombre de tours
+    public int $spinCycle;
+    // Capacité de chargement
+    public int $loadCapacity;
+
+    // Permet de créer une nouvelle machine à laver
+    public function __construct(string $reference, string $name, float $price, int $spinCycle, int $loadCapacity) {
+        // Appelle le contructeur du parent
+        parent::__construct(string $reference, string $name, float $price);
+        $this->spinCycle = $spinCycle;
+        $this->loadCapacity = $loadCapacity;
+    }
+
+    // Génère une description du produit
+    public function getDescription(): string
+    {
+        // Demande au parent de générer une description avant de la compléter
+        return
+            parent::__getDescription() .
+            'Nombre de tours: ' . $this->spinCycle . PHP_EOL .
+            'Capacité: ' . $this->loadCapacity . PHP_EOL
+        ;
+    }
+}
+
+$hdTvScreen = new TvScreen('19841964', 'Téléviseur HD', 699.99, 1920, 1080);
+$hdTvScreen->reference; // => &quot;19841964&quot;
+$hdTvScreen->name;      // => &quot;Téléviseur HD&quot;
+$hdTvScreen->price;     // => 699.99
+$hdTvScreen->width;     // => 1920
+$hdTvScreen->height;    // => 1080
+
+$hdTvScreen->getDescription();    // => &quot;Référence: 19841964\nNom: Téléviseur HD\nPrix: 699.99 &amp;euro;\nLargeur: 1920\nHauteur: 1080\n&quot;
+
+$hdTvScreen instanceof TvScreen;    // => true
+$hdTvScreen instanceof Product;     // => true
+$hdTvScreen instanceof Computer;    // => false</code>
+PHP;
+highlight_string($code); ?>
+</div>
+
+</details> 
+
+<p>On observe que l'objet de classe <strong>TvScreen</strong> a bien hérité des propriétés de <strong>Product</strong>. On peut donc dire que tous les objets <strong>TvScreen</strong> sont <strong>à la fois</strong> des télévisions et des produits.</p>
+<p>En outre, il a été possible de <strong>surcharger</strong> la méthode <strong>getDescription</strong>, c'est-à-dire de redéfinir son comportement en incluant le comportement de la classe parente. Une sous-classe ne fait donc pas qu'hériter des comportements, elle peut aussi les transformer si besoin: ceci s'appelle le <strong>polymorphisme</strong>.</p>
+<p>L'héritage et le polymorphisme nous donnent donc la flexibilité nécessaire pour factoriser du code commun à plusieurs classes, sans pour autant contraindre le code de chaque sous-classe.</p>
+<h2 id="classes-abstraites">Classes abstraites</h2>
+<p>L'exemple précédent qui factorise le code de plusieurs types de produits particuliers dans une seule et même classe <strong>Product</strong> contient un défaut: il est possible d'écrire...</p>
+<pre class="code-container"><code class="lang-php"><span class="hljs-function"><span class="hljs-title">new</span></span> Product(...);
+</code></pre>
+<p>...alors qu'un produit général n'a pas de sens. Nous voulons créer des ordinateurs, des télévisions, etc. et la classe <strong>Product</strong> a uniquement vocation à rassembler le code commun entre les différents types de produits spécifiques. Dans cette situation, on va dire que <strong>Computer</strong>, <strong>TvScreen</strong>, etc. sont des <strong>classes concrètes</strong> (c'est-à-dire qu'elle représentent de véritables objets), alors que <strong>Product</strong> est une <strong>classe abstraite</strong> (c'est-à-dire qu'elle sert de base à des classes concrètes, mais qu'elle ne représente pas de véritables objets en tant que telle).</p>
+<p>On écrirait donc le code suivant:</p>
+<details> 
+<summary>Avec une classe abstraite</summary>
+
+<div class='code-container'>
+<?php 
+$code = <<<'PHP'
+<?php
+
+// Représente un produit en général
+abstract class Product
+{
+    ...
+}
+
+// Représente un ordinateur
+class Computer extends Product
+{
+    ...
+}
+
+// Représente une télévision
+class TvScreen extends Product
+{
+    ...
+}
+
+// Représente une machine à laver
+class WashingMachine extends Product
+{
+    ...
+}
+
+$product = new Product(...);    // => PHP: Fatal error: Cannot instantiate abstract class</code>
+PHP;
+highlight_string($code); ?>
+</div>
+
+</details>
+
+<p>Le mot-clé <strong>abstract</strong> n'ajoute rien au fonctionnement de notre classe <strong>Product</strong>, hormis qu'il interdit de l'instancier. Il s'agit d'une note d'intention qui permet de prévenir d'autres développeurs que cette classe ne sert pas à représenter des objets concrets, mais bien à être dérivée par des sous-classes.</p>
